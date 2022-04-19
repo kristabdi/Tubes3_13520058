@@ -41,7 +41,7 @@ func MatchDisease(c *fiber.Ctx) error {
 	//TODO gunakan algo KMP dkk
 
 	// String similarity antara query.Sequence dengan disease.Sequence
-	similarity := utils.calculateSimiliarity(disease.Sequence, query.Sequence)
+	similarity := utils.CalculateSimiliarity(disease.Sequence, query.Sequence)
 	var similar bool
 	if similarity >= 0.8 {
 		similar = true

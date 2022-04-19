@@ -9,7 +9,7 @@ func min(a, b int) int {
 	return b
 }
 
-func calculateSimiliarity(disease string, dna string) float64 {
+func CalculateSimiliarity(disease string, dna string) float32 {
 	var ratio float64 = 0
 	var count int = 0
 	var lenDisease = len(disease)

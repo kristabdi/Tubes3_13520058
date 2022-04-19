@@ -11,10 +11,12 @@ func DiseaseGetAll() []models.Disease {
 	return diseases
 }
 
-func DiseaseGetOne() models.Disease {
+func DiseaseGetOne(name string) (models.Disease, error) {
 	var disease models.Disease
-	utils.Db.First(&disease)
-	return disease
+	if result := utils.Db.Where("name = ?", name).First(&disease); result.Error != nil {
+		return disease, result.Error
+	}
+	return disease, nil
 }
 
 func DiseaseInsertOne(data *models.Disease) error {
