@@ -6,7 +6,6 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
-	"github.com/kristabdi/Tubes3_13520058/handlers"
 	"github.com/kristabdi/Tubes3_13520058/utils"
 )
 
@@ -31,8 +30,8 @@ func main() {
 		port = "3000"
 	}
 
-	err = app.Listen(":" + port)
-	if err != nil {
-		log.Fatalln("Server start error")
-	}
+	// err = app.Listen(":" + port)
+	// if err != nil {
+	// 	log.Fatalln("Server start error")
+	// }
 }

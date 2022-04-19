@@ -11,6 +11,12 @@ func DiseaseGetAll() []models.Disease {
 	return diseases
 }
 
+func DiseaseGetOne() models.Disease {
+	var disease models.Disease
+	utils.Db.First(&disease)
+	return disease
+}
+
 func DiseaseInsertOne(data *models.Disease) error {
 	result := utils.Db.Create(data)
 	return result.Error
