@@ -9,8 +9,13 @@ import (
 // run with go test -v ./...
 
 func TestCalculateSimiliarity(t *testing.T) {
-	ratio := CalculateSimiliarity("AACTGATGCATG", "ACAAGCTAG")
+	ratio := CalculateSimiliarity("AACTGATGCATG", "TGCA")
 	t.Logf("Ratio: %f", ratio)
+}
+
+func TestBMMatch(t *testing.T) {
+	verdict := BMMatch("AACTGATGCATG", "TGCA")
+	t.Logf("Verdict: %t", verdict)
 }
 
 func TestIsValidDNA(t *testing.T) {

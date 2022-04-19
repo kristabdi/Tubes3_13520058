@@ -9,7 +9,7 @@ func Min(a, b int) int {
 	return b
 }
 
-func CalculateSimiliarity(disease string, dna string) float32 {
+func CalculateSimiliarity(dna string, disease string) float64 {
 	var ratio float64 = 0
 	var count int = 0
 	var lenDisease = len(disease)
@@ -42,8 +42,8 @@ func CalculateSimiliarity(disease string, dna string) float32 {
 			} else {
 				count = 2
 			}
-			matrix[i][j] = min(matrix[i-1][j]+1, matrix[i][j-1]+1)
-			matrix[i][j] = min(matrix[i-1][j-1]+count, matrix[i][j])
+			matrix[i][j] = Min(matrix[i-1][j]+1, matrix[i][j-1]+1)
+			matrix[i][j] = Min(matrix[i-1][j-1]+count, matrix[i][j])
 		}
 	}
 

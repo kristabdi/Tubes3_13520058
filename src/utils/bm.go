@@ -1,6 +1,8 @@
 package utils
 
-func BmMatch(disease string, dna string) bool {
+import "fmt"
+
+func BMMatch(dna string, disease string) bool {
 	lenDisease := len(disease)
 	lenDna := len(dna)
 	L := GetLastOccurence(disease)
@@ -14,6 +16,7 @@ func BmMatch(disease string, dna string) bool {
 	j = lenDisease - 1
 
 	for {
+		fmt.Println("i: ", dna[i], "j: ", disease[j])
 		if disease[j] == dna[i] {
 			if j == 0 {
 				// After matching all the characters, if the last character of the disease is matched, then return true
@@ -30,11 +33,11 @@ func BmMatch(disease string, dna string) bool {
 			j = lenDisease - 1
 		}
 
-		if i <= lenDna-1 {
+		if i > lenDna-1 {
 			break
 		}
 	}
-	return true
+	return false
 }
 
 func GetLastOccurence(disease string) []int {
@@ -58,18 +61,4 @@ func GetLastOccurence(disease string) []int {
 		}
 	}
 	return L
-}
-
-func GetIdx(sequencechar byte) int {
-	switch sequencechar {
-	case 'A':
-		return 0
-	case 'T':
-		return 1
-	case 'C':
-		return 2
-	case 'G':
-		return 3
-	}
-	return -1
 }
