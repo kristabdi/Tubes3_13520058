@@ -2,7 +2,7 @@ package utils
 
 import "fmt"
 
-func min(a, b int) int {
+func Min(a, b int) int {
 	if a < b {
 		return a
 	}

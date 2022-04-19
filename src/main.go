@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
+	"github.com/kristabdi/Tubes3_13520058/handlers"
 	"github.com/kristabdi/Tubes3_13520058/utils"
 )
 

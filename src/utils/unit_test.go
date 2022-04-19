@@ -9,7 +9,7 @@ import (
 // run with go test -v ./...
 
 func TestCalculateSimiliarity(t *testing.T) {
-	ratio := calculateSimiliarity("AACTGATGCATG", "ACAAGCTAG")
+	ratio := CalculateSimiliarity("AACTGATGCATG", "ACAAGCTAG")
 	t.Logf("Ratio: %f", ratio)
 }
 
