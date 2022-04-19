@@ -1,15 +1,5 @@
 package main
 
-import (
-	"fmt"
-	// "github.com/gofiber/fiber/v2"
-	// "github.com/joho/godotenv"
-	// "github.com/kristabdi/Tubes3_13520058/handlers"
-	"github.com/kristabdi/Tubes3_13520058/utils"
-	// "log"
-	// "os"
-)
-
 func main() {
 	// err := godotenv.Load()
 	// if err != nil {
@@ -36,8 +26,8 @@ func main() {
 	// 	log.Fatalln("Server start error")
 	// }
 
-	var s string = "Apple Inc."
-	var t string = "apple inc."
-	var ratio int = calculate_similiarity(s, t)
-	fmt.Println(ratio)
+	//var s string = "Apple Inc."
+	//var t string = "apple inc."
+	//var ratio int = calculate_similiarity(s, t)
+	//fmt.Println(ratio)
 }
