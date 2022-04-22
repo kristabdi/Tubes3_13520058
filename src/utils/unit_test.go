@@ -18,6 +18,11 @@ func TestBMMatch(t *testing.T) {
 	t.Logf("Verdict: %t", verdict)
 }
 
+func TestKMPMatch(t *testing.T) {
+	verdict := KMPMatch("AACTGATGCATG", "TGCA")
+	t.Logf("Verdict: %t", verdict)
+}
+
 func TestIsValidDNA(t *testing.T) {
 	tests := []struct {
 		name string
