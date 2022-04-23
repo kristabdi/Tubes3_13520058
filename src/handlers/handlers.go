@@ -12,12 +12,28 @@ import (
 	"gorm.io/gorm"
 )
 
-func DiseaseGetAll(c *fiber.Ctx) error {
-	diseases := controllers.DiseaseGetAll()
-	return c.JSON(diseases)
+func DiseaseInsert(c *fiber.Ctx) error {
+	name := c.Params("name")
+	sequence := c.Params("sequence")
+
+	var disease models.Disease
+	var err error
+
+	if disease, err = controllers.DiseaseGetOne(name); errors.Is(err, gorm.ErrRecordNotFound) {
+		disease.Name = name
+		disease.Sequence = sequence
+		err = controllers.DiseaseInsertOne(&disease)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString("Disease Insert Error")
+		}
+
+		return c.SendStatus(fiber.StatusOK)
+	} else {
+		return c.Status(fiber.StatusBadRequest).SendString("Disease already in DB")
+	}
 }
 
-func MatchDisease(c *fiber.Ctx) error {
+func DiseaseMatch(c *fiber.Ctx) error {
 	var err error
 	query := new(models.QueryMatch)
 	if err = c.BodyParser(query); err != nil {
@@ -38,15 +54,24 @@ func MatchDisease(c *fiber.Ctx) error {
 		}
 	}
 
-	//TODO gunakan algo KMP dkk
-
-	// String similarity antara query.Sequence dengan disease.Sequence
-	similarity := utils.CalculateSimiliarity(disease.Sequence, query.Sequence)
 	var similar bool
-	if similarity >= 0.8 {
-		similar = true
+	if c.Params("algo") == "bm" {
+		similar = utils.BMMatch(query.Sequence, disease.Sequence)
+	} else if c.Params("algo") == "kmp" {
+		similar = utils.KMPMatch(query.Sequence, disease.Sequence)
+	}
+
+	var similarity float64
+	if similar == false {
+		// String similarity antara query.Sequence dengan disease.Sequence
+		similarity = utils.CalculateSimiliarity(query.Sequence, disease.Sequence)
+		if similarity >= 0.8 {
+			similar = true
+		} else {
+			similar = false
+		}
 	} else {
-		similar = false
+		similarity = 1.0
 	}
 
 	history := models.History{
@@ -61,5 +86,65 @@ func MatchDisease(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("History Insert Error")
 	}
 
-	return c.Status(fiber.StatusOK).SendString(fmt.Sprint(history.CreatedAt.Format("02 01 2006"), history.Name, history.Penyakit, history.Similarity, history.IsTrue))
+	var dateString string
+	if dateString, err = utils.ConvertTime(history.CreatedAt); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString("Date string Error")
+	}
+
+	return c.Status(fiber.StatusOK).SendString(fmt.Sprintf("%s %s %s %.2f %t", dateString, history.Name, history.Penyakit, history.Similarity, history.IsTrue))
+}
+
+func HistoryQuery(c *fiber.Ctx) error {
+	var err error
+	var history []models.History
+
+	query := new(models.QueryHistory)
+	if err = c.BodyParser(query); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString("Parsing error")
+	}
+
+	if query.Date == "" {
+		if history, err = controllers.HistoryGetByName(query.Name); err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return c.Status(fiber.StatusNotFound).SendString("History not found")
+			} else {
+				return c.Status(fiber.StatusInternalServerError).SendString("History Get Error")
+			}
+		}
+
+		//return c.Status(fiber.StatusOK).SendString(fmt.Sprint(history.CreatedAt.Format("02 01 2006"), history.Name, history.Penyakit, history.Similarity, history.IsTrue))
+	} else if query.Name == "" {
+		if history, err = controllers.HistoryGetByDate(query.Date); err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return c.Status(fiber.StatusNotFound).SendString("History not found")
+			} else {
+				return c.Status(fiber.StatusInternalServerError).SendString("History Get Error")
+			}
+		}
+	} else {
+		if history, err = controllers.HistoryGetByAll(query.Name, query.Date); err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return c.Status(fiber.StatusNotFound).SendString("History not found")
+			} else {
+				return c.Status(fiber.StatusInternalServerError).SendString("History Get Error")
+			}
+		}
+	}
+
+	if len(history) <= 0 {
+		return c.Status(fiber.StatusNotFound).SendString("History not found")
+	}
+
+	var output []string
+	var dateString string
+
+	for _, hist := range history {
+		if dateString, err = utils.ConvertTime(hist.CreatedAt); err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString("Date string Error")
+		}
+
+		output = append(output, fmt.Sprintf("%s %s %s %.2f %t", dateString, hist.Name, hist.Penyakit, hist.Similarity, hist.IsTrue))
+	}
+
+	return c.Status(fiber.StatusOK).JSON(output)
 }

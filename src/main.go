@@ -23,16 +23,18 @@ func main() {
 		return c.SendString("Hello World!")
 	})
 
-	disease := app.Group("/api/disease")
-	disease.Get("/all", handlers.GetAll)
+	api := app.Group("/api")
+	api.Post("/insert/:name/:sequence", handlers.DiseaseInsert)
+	api.Post("/match/:algo", handlers.DiseaseMatch)
+	api.Get("/history", handlers.HistoryQuery)
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
 	}
 
-	// err = app.Listen(":" + port)
-	// if err != nil {
-	// 	log.Fatalln("Server start error")
-	// }
+	err = app.Listen(":" + port)
+	if err != nil {
+		log.Fatalln("Server start error")
+	}
 }
