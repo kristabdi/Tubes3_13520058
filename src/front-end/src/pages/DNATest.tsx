@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button, Form } from 'react-bootstrap'
 
 function DNATest() {
     const [name, setName] = React.useState('')
@@ -16,7 +17,7 @@ function DNATest() {
         }
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         console.log('submit');
         console.log("name: " + name);
@@ -25,14 +26,19 @@ function DNATest() {
     }
 
   return (
-    <div>
-        <h1>DNA Test</h1>
-        <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Name" onChange={e => setName(e.target.value)}/>
-            <input type="file" onChange={handleChangeFile}/>
-            <input type="text" placeholder='Disease' onChange={e => setDisease(e.target.value)}/>
-            <button type="submit">Submit</button>
-        </form>
+    <div className = 'container mt-5'>
+        <div className='card'>
+            <h1>DNA Test</h1>
+            <Form className='form'>
+                <p className='mt-2'>Username</p>
+                <input type="text" placeholder="Name" onChange={e => setName(e.target.value)}/>
+                <p>Sequence</p>
+                <input type="file" onChange={handleChangeFile}/>
+                <p>Disease</p>
+                <input type="text" placeholder='Disease' onChange={e => setDisease(e.target.value)}/>
+                <Button variant="primary" onClick={handleSubmit} className='button mt-2'>Submit</Button>
+            </Form>
+        </div>
     </div>
   )
 }

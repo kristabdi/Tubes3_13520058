@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Form } from 'react-bootstrap';
 
 function AddDesease() {
     const [desease, setDesease] = React.useState("");
@@ -23,14 +24,16 @@ function AddDesease() {
     }
 
   return (
-    <div>
-        <h1>Tambah Penyakit</h1>
-        <div>
-            <form>
-                <input type="text" placeholder="Nama Penyakit" onChange={(e => setDesease(e.target.value)) } />
+    <div className = 'container mt-5'>
+        <div className='card'>
+            <h1>Add Desease</h1>
+            <Form className='form'>
+                <p className='mt-2'>Disease</p>
+                <input type="text" placeholder="Name" onChange={(e => setDesease(e.target.value)) } />
+                <p>Sequence</p>
                 <input type="file" onChange={handleChangeFile} />
-                <button type="submit" onClick={handleSubmitDisease}>Submit</button>
-            </form>
+                <Button variant="primary" onClick={handleSubmitDisease} className='button mt-2'>Submit</Button>
+            </Form>
         </div>
     </div>
   )
