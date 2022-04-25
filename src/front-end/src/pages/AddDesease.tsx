@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 
@@ -21,6 +22,26 @@ function AddDesease() {
         console.log('submit');
         console.log("desease: " + desease);
         console.log("sequence: " + sequence);
+
+        // Make post request to server
+        const newDisease = {
+            name: desease,
+            sequence: sequence
+        }
+
+        axios.post('http://127.0.0.1:3000/api/insert/', {
+            header : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body : newDisease
+        })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
+            .catch(err => {console.log(err);});
     }
 
   return (

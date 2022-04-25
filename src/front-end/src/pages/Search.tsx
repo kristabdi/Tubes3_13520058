@@ -1,14 +1,38 @@
+import axios from 'axios';
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { BiSearch } from 'react-icons/bi';
 
 function Search() {
     const [text, setText] = React.useState('')
+    const [res, setRes] = React.useState([])
+
+    const fetchData = () => {
+        const newData = {
+            text: text
+        }
+        axios.post('http://127.0.0.1:3000/api/history', {
+            header : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body : newData
+        })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                setRes(res.data)
+            })
+            .catch(err => { console.log(err); });
+    }
     
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {   
         e.preventDefault();
         console.log('submit');
         console.log("text: " + text);
+
+        fetchData();
     }
 
     const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -16,6 +40,8 @@ function Search() {
             e.preventDefault();
             console.log('submit');
             console.log("text: " + text);
+
+            fetchData();
         }
     }
 

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React from 'react'
 import { Button, Form } from 'react-bootstrap'
 
@@ -5,6 +6,7 @@ function DNATest() {
     const [name, setName] = React.useState('')
     const [sequence, setSequence] = React.useState('')
     const [disease, setDisease] = React.useState('')
+    const [result, setResult] = React.useState('')
 
     const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -23,6 +25,28 @@ function DNATest() {
         console.log("name: " + name);
         console.log("sequence: " + sequence);
         console.log("disease: " + disease);
+
+        // Make post request to server
+        const newDNATest = {
+            name: name,
+            sequence: sequence,
+            disease: disease
+        }
+
+        axios.post('http://127.0.0.1:3000/api/match', {
+            header : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: newDNATest
+        })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                setResult(res.data.result)
+            })
+            .catch(err => { console.log(err); });
     }
 
   return (
