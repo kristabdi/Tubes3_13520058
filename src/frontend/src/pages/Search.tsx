@@ -11,7 +11,7 @@ function Search() {
         const newData = {
             text: text
         }
-        axios.post('http://127.0.0.1:3000/api/history', {
+        axios.post('api/history', {
             header : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',

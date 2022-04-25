@@ -29,7 +29,7 @@ function AddDesease() {
             sequence: sequence
         }
 
-        axios.post('http://127.0.0.1:3000/api/insert/', {
+        axios.post('api/insert/', {
             header : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
