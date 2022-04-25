@@ -19,7 +19,6 @@ type QueryMatch struct {
 	Name     string `json:"name"`
 	Sequence string `json:"sequence"`
 	Penyakit string `json:"penyakit"`
-	Mode     string `json:"mode"`
 }
 
 type QueryHistory struct {

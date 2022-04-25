@@ -3,6 +3,7 @@ package handlers
 import (
 	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -34,6 +35,7 @@ func DiseaseInsert(c *fiber.Ctx) error {
 func DiseaseMatch(c *fiber.Ctx) error {
 	var err error
 	query := new(models.QueryMatch)
+	log.Println(query)
 	if err = c.BodyParser(query); err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString("Parsing error")
 	}

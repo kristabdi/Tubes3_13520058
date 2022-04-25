@@ -19,18 +19,16 @@ func main() {
 	app := fiber.New()
 	utils.ConnectSupabase()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello World!")
-	})
-
 	api := app.Group("/api")
 	api.Post("/insert", handlers.DiseaseInsert)
 	api.Post("/match/:algo", handlers.DiseaseMatch)
 	api.Get("/history", handlers.HistoryQuery)
 
+	app.Static("/", "./frontend/build")
+
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "3000"
+		port = "3001"
 	}
 
 	err = app.Listen(":" + port)
