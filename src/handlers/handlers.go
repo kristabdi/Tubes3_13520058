@@ -19,7 +19,7 @@ func DiseaseInsert(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("Parsing error")
 	}
 
-	if disease, err = controllers.DiseaseGetOne(disease.Name); errors.Is(err, gorm.ErrRecordNotFound) {
+	if _, err = controllers.DiseaseGetOne(disease.Name); errors.Is(err, gorm.ErrRecordNotFound) {
 		err = controllers.DiseaseInsertOne(&disease)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString("Disease Insert Error")
