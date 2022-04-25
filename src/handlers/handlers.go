@@ -13,15 +13,13 @@ import (
 )
 
 func DiseaseInsert(c *fiber.Ctx) error {
-	name := c.Params("name")
-	sequence := c.Params("sequence")
-
-	var disease models.Disease
 	var err error
+	var disease models.Disease
+	if err = c.BodyParser(&disease); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString("Parsing error")
+	}
 
-	if disease, err = controllers.DiseaseGetOne(name); errors.Is(err, gorm.ErrRecordNotFound) {
-		disease.Name = name
-		disease.Sequence = sequence
+	if disease, err = controllers.DiseaseGetOne(disease.Name); errors.Is(err, gorm.ErrRecordNotFound) {
 		err = controllers.DiseaseInsertOne(&disease)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString("Disease Insert Error")

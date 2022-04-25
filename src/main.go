@@ -24,7 +24,7 @@ func main() {
 	})
 
 	api := app.Group("/api")
-	api.Post("/insert/:name/:sequence", handlers.DiseaseInsert)
+	api.Post("/insert", handlers.DiseaseInsert)
 	api.Post("/match/:algo", handlers.DiseaseMatch)
 	api.Get("/history", handlers.HistoryQuery)
 
