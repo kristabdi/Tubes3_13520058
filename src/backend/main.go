@@ -13,26 +13,26 @@ import (
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("Env load failed")
+		log.Println(".env load failed")
 	}
 
 	app := fiber.New()
 	utils.ConnectSupabase()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello World!")
-	})
+	api := app.Group("/api")
+	api.Post("/insert", handlers.DiseaseInsert)
+	api.Post("/match/:algo", handlers.DiseaseMatch)
+	api.Post("/history", handlers.HistoryQuery)
 
-	disease := app.Group("/api/disease")
-	disease.Get("/all", handlers.GetAll)
+	app.Static("/", "./frontend/build/index.html")
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "3000"
+		port = "3001"
 	}
 
-	// err = app.Listen(":" + port)
-	// if err != nil {
-	// 	log.Fatalln("Server start error")
-	// }
+	err = app.Listen(":" + port)
+	if err != nil {
+		log.Fatalln("Server start error")
+	}
 }
