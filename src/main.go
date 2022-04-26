@@ -13,7 +13,7 @@ import (
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("Env load failed")
+		log.Panicln("Env load failed")
 	}
 
 	app := fiber.New()
