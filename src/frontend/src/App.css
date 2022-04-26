@@ -111,3 +111,8 @@ body {
     height: 15px;
     margin: 6px;
 }
+
+.result {
+    width: 90%;
+    background-color: #ffffff;
+}
