@@ -1,10 +1,10 @@
-import axios from 'axios';
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 
 function AddDesease() {
     const [desease, setDesease] = React.useState("");
     const [sequence, setSequence] = React.useState("");
+    const [status, setStatus] = React.useState('')
 
     const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -17,37 +17,36 @@ function AddDesease() {
         }
     }
 
-    const handleSubmitDisease = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleSubmitDisease = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         console.log('submit');
         console.log("desease: " + desease);
         console.log("sequence: " + sequence);
 
         // Make post request to server
-        const newDisease = {
-            name: desease,
-            sequence: sequence
-        }
-
-        axios.post('api/insert/', {
-            header : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body : newDisease
-        })
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
+        try {
+            const response = await fetch('/api/insert/', {
+                method: 'POST',
+                mode: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: desease,
+                    sequence: sequence
+                })
             })
-            .catch(err => {console.log(err);});
+            setStatus(await response.text())
+        } catch (error) {
+            setStatus('Internal Server error')
+        }
     }
 
   return (
     <div className = 'container mt-5'>
         <div className='card'>
             <h1>Add Desease</h1>
+            <p>Status: {status}</p>
             <Form className='form'>
                 <p className='mt-2'>Disease</p>
                 <input type="text" placeholder="Name" onChange={(e => setDesease(e.target.value)) } />

@@ -12,7 +12,7 @@ function Navigation() {
       <div>
         <Link to="/" className='mx-4 nav-item'>DNA Test</Link>
         <Link to="/search" className='mx-4 nav-item'>Search</Link>
-        <Link to="/add" className='mx-4 nav-item'>Add Desease</Link>
+        <Link to="/add" className='mx-4 nav-item'>Add Disease</Link>
       </div>
     </Navbar>
   )

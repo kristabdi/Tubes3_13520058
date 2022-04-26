@@ -38,11 +38,7 @@ function DNATest() {
                     "penyakit": disease
                 })
             })
-            if(response.ok){
-                setStatus('Success')
-            } else {
-                setStatus(await response.text())
-            }
+            setStatus(await response.text())
         } catch (error) {
             setStatus('Internal Server error')
         }
