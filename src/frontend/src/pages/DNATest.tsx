@@ -60,14 +60,17 @@ function DNATest() {
                 <input type="file" onChange={handleChangeFile}/>
                 <p>Disease</p>
                 <input type="text" placeholder='Disease' onChange={e => setDisease(e.target.value)}/>
-                <label>
-                  <input type="radio" value="bm" checked={selected === 'bm'} onChange={handleOptionChange} />
-                  Boyer Moore (BM)
-                </label>
-                <label>
-                  <input type="radio" value="kmp" checked={selected === 'kmp'} onChange={handleOptionChange} />
-                  Knuth Morris Pratt (KMP)
-                </label>
+                <p>Algorithm</p>
+                <div className='input-radio'>
+                    <label>
+                    <input type="radio" name="algorithm" value="bm" checked={selected === 'bm'} onChange={handleOptionChange}/>
+                    Boyer-Moore
+                    </label>
+                    <label>                 
+                    <input type="radio" name="algorithm" value="kmp" checked={selected === 'kmp'} onChange={handleOptionChange}/>
+                    Knuth-Morris-Pratt
+                    </label>
+                </div>
                 <Button variant="primary" onClick={handleSubmit} className='button mt-2'>Submit</Button>
             </Form>
         </div>

@@ -101,3 +101,13 @@ body {
     font-size: 32px;
     cursor: pointer;
 }
+
+.input-radio {
+    display: flex;
+}
+
+.input-radio input {
+    width: 15px;
+    height: 15px;
+    margin: 6px;
+}
