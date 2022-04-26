@@ -24,7 +24,7 @@ func main() {
 	api.Post("/match/:algo", handlers.DiseaseMatch)
 	api.Get("/history", handlers.HistoryQuery)
 
-	app.Static("/", "./frontend/build")
+	app.Static("/", "./frontend/build/index.html")
 
 	port := os.Getenv("PORT")
 	if port == "" {
