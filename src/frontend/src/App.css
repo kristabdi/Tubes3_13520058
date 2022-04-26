@@ -117,6 +117,29 @@ body {
 .result {
     width: 90%;
     background-color: #ffffff;
+    overflow: auto;
+    height: 100%;
+    max-height: 360px;
+}
+
+.result thead {
+    background-color: #C6C8E9;
+    color: #000000;
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.75rem; /* 28px */
+    position: sticky;
+    top: 0;
+}
+
+.result table  { 
+    border-collapse: collapse;
+    width: 100%;
+}
+.result th, td {
+    padding: 8px 16px;
+}
+.result th     {
+    background:#eee;
 }
 
 .logo {
