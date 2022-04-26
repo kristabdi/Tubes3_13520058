@@ -22,10 +22,6 @@ function AddDesease() {
 
     const handleSubmitDisease = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        // console.log('submit');
-        // console.log("desease: " + desease);
-        // console.log("sequence: " + sequence);
-
         // Make post request to server
         try {
             const response = await fetch('/api/insert/', {
@@ -39,18 +35,18 @@ function AddDesease() {
                     sequence: sequence
                 })
             })
-            .then (response => {
-                if (response.status === 200) {
-                    setTitle("Success");
-                    setText("Desease has been added");
-                    setShow(true);
-                } else {
-                    setTitle("Error");
-                    // Harusnya bisa dapet string, bukan status textnya
-                    setText(response.statusText);
-                    setShow(true);
-                }
-            })
+            
+            if(response.ok){
+                setTitle("Success");
+                let result = await response.text()
+                setText(result);
+                setShow(true);
+            } else{
+                setTitle("Error");
+                let result = await response.text()
+                setText(result);
+                setShow(true);
+            }
         } catch (error) {
             setTitle('Error');
             setText('Internal Server error');

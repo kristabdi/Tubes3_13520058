@@ -81,7 +81,7 @@ func ConvertString(date string) (string, error) {
 	}
 
 	if dateSlice[1] == "Unknown" {
-		return newDate, fmt.Errorf("Unknown month")
+		return newDate, fmt.Errorf("Invalid Date")
 	}
 
 	newDate = fmt.Sprint(dateSlice[0] + " " + dateSlice[1] + " " + dateSlice[2])

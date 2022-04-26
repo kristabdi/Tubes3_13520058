@@ -32,7 +32,7 @@ func HistoryGetByDate(date string) ([]models.History, error) {
 	dateInTime, err = time.Parse("02 01 2006", newDate)
 
 	if err != nil {
-		return history, fmt.Errorf("Time parse Error")
+		return history, fmt.Errorf("Invalid Date")
 	}
 
 	if result := utils.Db.Where("created_at = ?", dateInTime).Find(&history); result.Error != nil {

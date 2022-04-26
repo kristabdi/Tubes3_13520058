@@ -41,22 +41,22 @@ function DNATest() {
                     "penyakit": disease
                 })
             })
-            .then(response => {
-                if (response.status === 200) {
-                    setTitle("Success");
-                    // console.log(response.text())
-                    // Text ada di PromiseResult
-                    setText("DNA Test has been added");
-                    setShow(true);
-                } else {
-                    setTitle("Error");
-                    setText(response.statusText);
-                    setShow(true);
-                }
-            })
-            // setStatus(await response.text())
+            
+            if(response.ok){
+                setTitle("Success");
+                let result = await response.text()
+                setText(result);
+                setShow(true);
+            } else{
+                setTitle("Error");
+                let result = await response.text()
+                setText(result);
+                setShow(true);
+            }
         } catch (error) {
-            // setStatus('Internal Server error')
+            setTitle("Error");
+            setText("Internal Server error");
+            setShow(true);
 
         }
     }

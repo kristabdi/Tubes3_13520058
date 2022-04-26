@@ -24,6 +24,14 @@ function Search() {
         } else if (validDisease.test(text)) {
             data.name = arr[0]
             setFail(false)
+        } else if (arr.length===4){
+            let date = arr[0] + " " + arr[1] + " " + arr[2]
+            let name = arr[3]
+            if (validInput.test(text) && validDisease.test(name)) {
+                data.date = date
+                data.name = name
+                setFail(false)
+            }
         } else {
             setFail(true)
         }
@@ -44,18 +52,20 @@ function Search() {
                     setRes(arr.map((item: any) => {
                         const textArr = item.split(' ')
                         return {
-                            date: textArr[0] + textArr[1] + textArr[2],
+                            date: textArr[0] +" "+ textArr[1] +" "+ textArr[2],
                             name: textArr[3],
                             disease: textArr[4],
-                            verdict: textArr[6],
-                            similarity: textArr[5]
+                            similarity: textArr[5],
+                            verdict: textArr[6]
                         }
                     }))
                 } else{
                     setStatus(await response.text())
+                    setRes([])
                 }
             } catch (error) {
                 setStatus('Internal Server error')
+                setRes([])
             }
         }
     }
@@ -93,7 +103,7 @@ function Search() {
 
             {/* Blum ngehandle kalo resnya kosong */}
             <div className='container mt-5'>
-            {res.length===0 ? 
+            {res.length===0 && status!=='OK' ? 
                 !fail && <p className='text-white'>{status}</p> 
                 :
                 <div className='result'>
@@ -103,8 +113,8 @@ function Search() {
                                 <th scope='col'>Date</th>
                                 <th scope='col'>Name</th>
                                 <th scope='col'>Disease</th>
-                                <th scope='col'>Verdict</th>
                                 <th scope='col'>Similarity</th>
+                                <th scope='col'>Verdict</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,8 +123,8 @@ function Search() {
                                     <td>{item.date}</td>
                                     <td>{item.name}</td>
                                     <td>{item.disease}</td>
-                                    <td>{item.verdict}</td>
                                     <td>{item.similarity}</td>
+                                    <td>{item.verdict}</td>
                                 </tr>
                             ))}
                         </tbody>

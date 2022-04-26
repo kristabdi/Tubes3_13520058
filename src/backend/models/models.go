@@ -10,7 +10,7 @@ type Disease struct {
 type History struct {
 	Name       string    `json:"name"`
 	Penyakit   string    `json:"penyakit"`
-	Similarity float64   `json:"similarity"`
+	Similarity float32   `json:"similarity"`
 	IsTrue     bool      `json:"isTrue"`
 	CreatedAt  time.Time `json:"created_at"`
 }

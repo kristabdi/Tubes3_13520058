@@ -31,7 +31,7 @@ func DiseaseInsert(c *fiber.Ctx) error {
 			return c.Status(fiber.StatusInternalServerError).SendString("Disease Insert Error")
 		}
 
-		return c.SendStatus(fiber.StatusOK)
+		return c.Status(fiber.StatusOK).SendString("Disease Data Added")
 	} else {
 		return c.Status(fiber.StatusBadRequest).SendString("Disease already in DB")
 	}
@@ -53,7 +53,7 @@ func DiseaseMatch(c *fiber.Ctx) error {
 	var disease models.Disease
 	if disease, err = controllers.DiseaseGetOne(query.Penyakit); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return c.Status(fiber.StatusNotFound).SendString("Penyakit not found")
+			return c.Status(fiber.StatusNotFound).SendString("Disease not found")
 		} else {
 			return c.Status(fiber.StatusInternalServerError).SendString("Disease Get Error")
 		}
@@ -66,8 +66,8 @@ func DiseaseMatch(c *fiber.Ctx) error {
 		similar = utils.KMPMatch(query.Sequence, disease.Sequence)
 	}
 
-	var similarity float64
-	if similar == false {
+	var similarity float32
+	if !similar {
 		// String similarity antara query.Sequence dengan disease.Sequence
 		similarity = utils.CalculateSimiliarity(query.Sequence, disease.Sequence)
 		if similarity >= 0.8 {
@@ -116,12 +116,12 @@ func HistoryQuery(c *fiber.Ctx) error {
 				return c.Status(fiber.StatusInternalServerError).SendString("History Get Error")
 			}
 		}
-
-		//return c.Status(fiber.StatusOK).SendString(fmt.Sprint(history.CreatedAt.Format("02 01 2006"), history.Name, history.Penyakit, history.Similarity, history.IsTrue))
 	} else if query.Name == "" {
 		if history, err = controllers.HistoryGetByDate(query.Date); err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return c.Status(fiber.StatusNotFound).SendString("History not found")
+			} else if (err.Error()=="Invalid Date"){
+				return c.Status(fiber.StatusInternalServerError).SendString("Invalid Date")
 			} else {
 				return c.Status(fiber.StatusInternalServerError).SendString("History Get Error")
 			}
@@ -130,6 +130,8 @@ func HistoryQuery(c *fiber.Ctx) error {
 		if history, err = controllers.HistoryGetByAll(query.Name, query.Date); err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return c.Status(fiber.StatusNotFound).SendString("History not found")
+			} else if (err.Error()=="Invalid Date"){
+				return c.Status(fiber.StatusInternalServerError).SendString("Invalid Date")
 			} else {
 				return c.Status(fiber.StatusInternalServerError).SendString("History Get Error")
 			}
