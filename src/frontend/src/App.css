@@ -12,6 +12,8 @@ body {
 .nav-item {
     color: #000000;
     text-decoration: none;
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.75rem; /* 28px */
 }
 
 .nav-item:hover {
@@ -115,4 +117,14 @@ body {
 .result {
     width: 90%;
     background-color: #ffffff;
+}
+
+.logo {
+    padding-top: 7px;
+    padding-left: 10px;
+    width: 200px;
+}
+
+.banner {
+    padding-top:30vh;
 }
