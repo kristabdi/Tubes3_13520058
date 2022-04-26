@@ -20,6 +20,11 @@ func DiseaseInsert(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("Parsing error")
 	}
 
+	valid := utils.IsValidDNA(query.Sequence)
+	if !valid {
+		return c.Status(fiber.StatusBadRequest).SendString("Sequence invalid")
+	}
+
 	if _, err = controllers.DiseaseGetOne(query.Name); errors.Is(err, gorm.ErrRecordNotFound) {
 		err = controllers.DiseaseInsertOne(query)
 		if err != nil {
