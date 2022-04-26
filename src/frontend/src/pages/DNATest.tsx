@@ -1,12 +1,15 @@
 import React from 'react'
 import { Button, Form } from 'react-bootstrap'
+import MsgBox from '../components/MsgBox'
 
 function DNATest() {
     const [name, setName] = React.useState('')
     const [sequence, setSequence] = React.useState('')
     const [disease, setDisease] = React.useState('')
-    const [status, setStatus] = React.useState('')
     const [selected, setSelected] = React.useState('bm')
+    const [show, setShow] = React.useState(false)
+    const [title, setTitle] = React.useState('')
+    const [text, setText] = React.useState('')
 
     const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -38,17 +41,31 @@ function DNATest() {
                     "penyakit": disease
                 })
             })
-            setStatus(await response.text())
+            .then(response => {
+                if (response.status === 200) {
+                    setTitle("Success");
+                    // console.log(response.text())
+                    // Text ada di PromiseResult
+                    setText("DNA Test has been added");
+                    setShow(true);
+                } else {
+                    setTitle("Error");
+                    setText(response.statusText);
+                    setShow(true);
+                }
+            })
+            // setStatus(await response.text())
         } catch (error) {
-            setStatus('Internal Server error')
+            // setStatus('Internal Server error')
+
         }
     }
 
   return (
+    <>
     <div className = 'container mt-5'>
         <div className='card'>
             <h1>DNA Test</h1>
-            <p>Status: {status}</p>
             <Form className='form'>
                 <p className='mt-2'>Username</p>
                 <input type="text" placeholder="Name" onChange={e => setName(e.target.value)}/>
@@ -71,6 +88,8 @@ function DNATest() {
             </Form>
         </div>
     </div>
+    {show && <MsgBox show={show} title={title} text={text} onHide={() => setShow(false)} />}
+    </>
   )
 }
 

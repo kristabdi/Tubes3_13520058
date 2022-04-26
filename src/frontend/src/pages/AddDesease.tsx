@@ -1,10 +1,13 @@
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
+import MsgBox from '../components/MsgBox';
 
 function AddDesease() {
     const [desease, setDesease] = React.useState("");
     const [sequence, setSequence] = React.useState("");
-    const [status, setStatus] = React.useState('')
+    const [show, setShow] = React.useState(false);
+    const [title, setTitle] = React.useState("");
+    const [text, setText] = React.useState("");
 
     const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -19,9 +22,9 @@ function AddDesease() {
 
     const handleSubmitDisease = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        console.log('submit');
-        console.log("desease: " + desease);
-        console.log("sequence: " + sequence);
+        // console.log('submit');
+        // console.log("desease: " + desease);
+        // console.log("sequence: " + sequence);
 
         // Make post request to server
         try {
@@ -36,17 +39,30 @@ function AddDesease() {
                     sequence: sequence
                 })
             })
-            setStatus(await response.text())
+            .then (response => {
+                if (response.status === 200) {
+                    setTitle("Success");
+                    setText("Desease has been added");
+                    setShow(true);
+                } else {
+                    setTitle("Error");
+                    // Harusnya bisa dapet string, bukan status textnya
+                    setText(response.statusText);
+                    setShow(true);
+                }
+            })
         } catch (error) {
-            setStatus('Internal Server error')
+            setTitle('Error');
+            setText('Internal Server error');
+            setShow(true);
         }
     }
 
   return (
+    <>
     <div className = 'container mt-5'>
         <div className='card'>
             <h1>Add Desease</h1>
-            <p>Status: {status}</p>
             <Form className='form'>
                 <p className='mt-2'>Disease</p>
                 <input type="text" placeholder="Name" onChange={(e => setDesease(e.target.value)) } />
@@ -56,6 +72,8 @@ function AddDesease() {
             </Form>
         </div>
     </div>
+    {show && <MsgBox show={show} title={title} text={text} onHide={() => setShow(false)} />}
+    </>
   )
 }
 
