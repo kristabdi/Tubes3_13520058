@@ -9,8 +9,8 @@ func Min(a, b int) int {
 	return b
 }
 
-func CalculateSimiliarity(dna string, disease string) float64 {
-	var ratio float64 = 0
+func CalculateSimiliarity(dna string, disease string) float32 {
+	var ratio float32 = 0
 	var count int = 0
 	var lenDisease = len(disease)
 	var lenDna = len(dna)
@@ -48,7 +48,7 @@ func CalculateSimiliarity(dna string, disease string) float64 {
 	}
 
 	var lastElement int = matrix[lenDisease][lenDna]
-	ratio = float64((totallength - lastElement)) / float64(totallength)
+	ratio = float32((totallength - lastElement)) / float32(totallength)
 	fmt.Printf("Ratio func : %f", ratio)
 	return ratio
 }
