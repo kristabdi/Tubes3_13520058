@@ -109,6 +109,9 @@ func HistoryQuery(c *fiber.Ctx) error {
 	}
 
 	if query.Date == "" {
+		if !utils.IsValidDiseaseSearchInput(query.Name) {
+			return c.Status(fiber.StatusBadRequest).SendString("Invalid Name")
+		}
 		if history, err = controllers.HistoryGetByName(query.Name); err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return c.Status(fiber.StatusNotFound).SendString("History not found")
@@ -127,6 +130,9 @@ func HistoryQuery(c *fiber.Ctx) error {
 			}
 		}
 	} else {
+		if !utils.IsValidDiseaseSearchInput(query.Name) {
+			return c.Status(fiber.StatusBadRequest).SendString("Invalid Name")
+		}
 		if history, err = controllers.HistoryGetByAll(query.Name, query.Date); err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return c.Status(fiber.StatusNotFound).SendString("History not found")
