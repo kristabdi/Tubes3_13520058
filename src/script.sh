@@ -7,6 +7,7 @@ npm install
 
 echo "Building frontend"
 npm run build
+rm -rf ../backend/frontend
 mkdir ../backend/frontend
 mv build ../backend/frontend/build
 
