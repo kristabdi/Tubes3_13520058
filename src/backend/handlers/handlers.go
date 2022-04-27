@@ -20,6 +20,10 @@ func DiseaseInsert(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("Parsing error")
 	}
 
+	if !utils.IsValidDiseaseSearchInput(query.Name) {
+		return c.Status(fiber.StatusBadRequest).SendString("Invalid Name")
+	}
+
 	valid := utils.IsValidDNA(query.Sequence)
 	if !valid {
 		return c.Status(fiber.StatusBadRequest).SendString("Sequence invalid")
