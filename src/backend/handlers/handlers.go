@@ -77,7 +77,7 @@ func DiseaseMatch(c *fiber.Ctx) error {
 	var similarity float32
 	if !similar {
 		// String similarity antara query.Sequence dengan disease.Sequence
-		similarity = utils.CalculateSimiliarity(query.Sequence, disease.Sequence)
+		similarity = utils.CalculateLevenshteinDist(query.Sequence, disease.Sequence)
 		if similarity >= 0.8 {
 			similar = true
 		} else {
