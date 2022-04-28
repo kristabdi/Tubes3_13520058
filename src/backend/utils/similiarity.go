@@ -53,14 +53,15 @@ func CalculateLevenshteinDist(dna string, disease string) float32 {
 	return ratio
 }
 
-func SimiliarityMatch(dna string, disease string) bool {
+func SimiliarityMatch(dna string, disease string) (bool, float32) {
 	// use levenshtein distance algorithm
 	lenDisease := len(disease)
 	lenDna := len(dna)
 
 	if lenDisease > lenDna {
-		return false
+		return false, 0.0
 	}
+
 	var temp float32
 	var biggestRatio float32
 	biggestRatio = -0.1
@@ -73,5 +74,5 @@ func SimiliarityMatch(dna string, disease string) bool {
 		}
 	}
 
-	return biggestRatio > 0.8
+	return (biggestRatio > 0.8), biggestRatio
 }
